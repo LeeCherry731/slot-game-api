@@ -1,0 +1,13 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+/* Your own custom component styles */
+
+@import "tailwindcss/utilities";
+
+html,
+body {
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+}

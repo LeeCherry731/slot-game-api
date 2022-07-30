@@ -1,0 +1,11 @@
+pnpm add -D prisma
+pnpm add @prisma/client
+pnpm exec init
+pnpm exec prisma migrate dev
+// pnpm exec prisma migrate dev --preview-feature
+
+pnpm exec prisma studio
+pnpm exec prisma migrate dev --name init
+
+//generate client
+pnpm exec prisma generate
