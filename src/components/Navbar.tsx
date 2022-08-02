@@ -22,16 +22,18 @@ export default function Navbar() {
               </span>
               <input
                 type="text"
-                placeholder="Search here..."
+                placeholder="Search here.ss.."
                 className="border px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
               />
             </div>
           </form>
-          {/* User */}
-          <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
-            {/* <UserDropdown /> */}
-          </ul>
         </div>
+        <button
+          type="button"
+          className="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
+        >
+          Logout
+        </button>
       </nav>
       {/* End Navbar */}
     </>

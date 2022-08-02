@@ -1,4 +1,6 @@
+import Router from "next/router";
 import React from "react";
+import apiAuth from "../libs/apiAuth";
 
 type Props = {};
 
@@ -30,9 +32,16 @@ const AdminNavbar = (props: Props) => {
             </div>
           </form>
           {/* User */}
-          <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
-            {/* <UserDropdown /> */}
-          </ul>
+          <button
+            type="button"
+            className="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
+            onClick={async () => {
+              await apiAuth.post("api/auth/logout");
+              await Router.replace("login");
+            }}
+          >
+            Logout
+          </button>
         </div>
       </nav>
       {/* End Navbar */}

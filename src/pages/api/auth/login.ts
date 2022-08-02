@@ -1,7 +1,9 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { sign } from "jsonwebtoken";
 import { serialize } from "cookie";
-import prisma from "../../../utils/prisma";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const secret = process.env.TOKEN_SECRET;
 
@@ -12,7 +14,7 @@ export default async function (req, res) {
   // if a user with this username
   // and password exists
 
-  const user = prisma.user.findUnique({ where: { name: username } });
+  const user = await prisma.user.findUnique({ where: { name: username } });
 
   if (!user) return res.status(401).json({ message: "Invalid credentials!" });
 

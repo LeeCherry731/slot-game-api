@@ -7,8 +7,8 @@ import { verify } from "jsonwebtoken";
 export function middleware(req: NextRequest) {
   // return NextResponse.redirect(new URL("/about-2", request.url));
   const jwt = req.cookies.OursiteJWT;
-
-  if (!jwt) return NextResponse.redirect(new URL("/login", req.url));
+  //@ts-ignore
+  if (!jwt) return NextResponse.rewrite(new URL("/login", req.url));
 
   const secret = process.env.TOKEN_SECRET;
   //  return NextResponse.rewrite(new URL("/about-2", request.url));
@@ -17,7 +17,7 @@ export function middleware(req: NextRequest) {
     //@ts-ignore
     if (!isJwt) return NextResponse.rewrite(new URL("/login", req.url));
     //@ts-ignore
-    return NextResponse.rewrite(new URL("/admin/dashboard", req.url));
+    NextResponse.next();
   } catch (e) {
     //@ts-ignore
     return NextResponse.rewrite(new URL("/login", req.url));
@@ -29,5 +29,5 @@ export const config = {
   //   matcher: "/about/:path*",
   //   matcher: "/admin/:path*",
   //   matcher: ["/about/:path*", "/dashboard/:path*"],
-  matcher: "/",
+  matcher: "/admin/:path*",
 };

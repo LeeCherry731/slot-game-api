@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import UserTable from "../../components/UserTable";
 
-import { User, PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import AdminLayout from "../../layouts/AdminLayout";
-
-const prisma = new PrismaClient();
 
 type Props = { users: User[] };
 
@@ -32,6 +30,7 @@ export default users;
 
 // @ts-ignore
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const prisma = new PrismaClient();
   const users = await prisma.user.findMany({ take: 30 });
   return {
     props: {

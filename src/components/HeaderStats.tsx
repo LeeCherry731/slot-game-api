@@ -1,4 +1,7 @@
+import { PrismaClient } from "@prisma/client";
+import { GetServerSideProps } from "next";
 import React from "react";
+
 import CardStats from "./CardStats";
 
 type Props = {};
@@ -69,3 +72,13 @@ const HeaderStats = (props: Props) => {
 };
 
 export default HeaderStats;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const prisma = new PrismaClient();
+  const users = await prisma.user.findMany({ take: 30 });
+  return {
+    props: {
+      users: JSON.parse(JSON.stringify(users)),
+    },
+  };
+};
