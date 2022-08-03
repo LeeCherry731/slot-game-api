@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import React from "react";
 import AdminNavbar from "../components/AdminNavbar";
 import FooterAdmin from "../components/FooterAdmin";

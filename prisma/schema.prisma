@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 
@@ -16,7 +16,7 @@ model User {
   email       String?  @unique
   password    String
   name        String @unique
-  role        String   @default("user")
+  role      Role     @default(USER)
   claimReward Boolean @default(false)
   coins       Int       
   createdAt   DateTime   @default(now())
@@ -27,12 +27,23 @@ model OrderDetails {
   id          Int @default(autoincrement()) @id  @unique
   createdAt   DateTime   @default(now())
   user        User       @relation(fields: [userId], references: [id])
-  userId      Int
+  userId      Int 
+  products     Products[]
+  description     String?
 }
 
-model Product {
+model Products {
   id             Int   @default(autoincrement()) @id 
   productName    String @default("coin") @unique
   amount         Int
   price          Int
+  image           String?
+  description     String?
+  orderDetailId   Int
+  orderDetails    OrderDetails @relation(fields: [orderDetailId], references: [id])
+}
+
+enum Role {
+  USER
+  ADMIN
 }

@@ -29,5 +29,5 @@ export const config = {
   //   matcher: "/about/:path*",
   //   matcher: "/admin/:path*",
   //   matcher: ["/about/:path*", "/dashboard/:path*"],
-  matcher: "/*",
+  matcher: ["/users/:path*"],
 };

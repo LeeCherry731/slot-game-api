@@ -1,9 +1,9 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { sign } from "jsonwebtoken";
 import { serialize } from "cookie";
-import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+import { Role } from "../../../../prisma/seed";
+import prisma from "../../../libs/prisma-client";
 
 const secret = process.env.TOKEN_SECRET;
 
@@ -21,7 +21,7 @@ export default async function (req, res) {
   if (
     username === (await user).name &&
     password === (await user).password &&
-    (await user).role === "admin"
+    (await user).role === Role.ADMIN
   ) {
     const token = sign(
       {

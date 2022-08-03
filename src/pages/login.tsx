@@ -3,7 +3,7 @@ import Router from "next/router";
 import React, { useState } from "react";
 import { Formik, Form, Field, FormikProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import apiAuth from "../libs/apiAuth";
+import apiAuth from "../utils/apiAuth";
 
 interface FormValues {
   username: string;
@@ -11,6 +11,8 @@ interface FormValues {
 }
 
 export default function Login(props: FormikProps<FormValues>) {
+  const [error, setError] = useState<boolean>(false);
+
   const validate = Yup.object({
     username: Yup.string()
       .max(30, "Must be 30 characters or less")
@@ -24,6 +26,9 @@ export default function Login(props: FormikProps<FormValues>) {
   return (
     <div className="grid place-items-center h-screen text-white">
       <div className="block p-6 rounded-lg shadow-lg bg-white max-w-lg w-4/6  bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+        {error ?? (
+          <div className="text-red-600 text-2xl">Wrong Credencial!</div>
+        )}
         <Formik
           initialValues={{
             username: "",
@@ -34,24 +39,27 @@ export default function Login(props: FormikProps<FormValues>) {
             values: FormValues,
             actions: FormikHelpers<FormValues>
           ) => {
-            actions.validateField("username");
-            actions.validateField("password");
-            const req = await apiAuth.post("api/auth/login", {
-              username: values.username,
-              password: values.password,
-            });
-            if ((await req.status) === 401) {
-              alert("Wrong Username or Password");
-            }
-            if ((await req.status) === 200) {
-              Router.push("/admin/dashboard");
-            }
+            apiAuth
+              .post("api/auth/login", {
+                username: values.username,
+                password: values.password,
+              })
+              .then((v) => {
+                if (v.status === 200) {
+                  Router.push("/admin/dashboard");
+                }
+              })
+              .catch((e) => {
+                setError((v) => !v);
+              });
+
             actions.setSubmitting(false);
           }}
         >
           {(formik) => (
             <div>
               <h1 className="text-lg uppercase">Login</h1>
+
               <Form>
                 <label
                   className="form-label inline-block mb-2 text-white"

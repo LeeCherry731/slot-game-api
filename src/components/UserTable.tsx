@@ -1,11 +1,26 @@
 import { User } from "@prisma/client";
-import React from "react";
+import Router from "next/router";
 
-type Props = {
-  users: User[];
-};
+import React, { useEffect, useState } from "react";
+import apiAuth from "../utils/apiAuth";
+
+type Props = {};
+
+interface AddCount {
+  _count: { orderDetails: number };
+}
+
+const initUsers: User[] = [];
 
 const UserTable = (props: Props) => {
+  const [users, setUsers] = useState<Partial<User & AddCount>[]>(initUsers);
+
+  useEffect(() => {
+    apiAuth.get("/api/users").then((res) => {
+      setUsers(res.data.data);
+    });
+  }, []);
+
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
@@ -27,7 +42,6 @@ const UserTable = (props: Props) => {
           </div>
         </div>
         <div className="block w-full overflow-x-auto">
-          {/* Projects table */}
           <table className="items-center w-full bg-transparent border-collapse">
             <thead>
               <tr>
@@ -46,10 +60,22 @@ const UserTable = (props: Props) => {
                 <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                   Coins
                 </th>
+                <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  Role
+                </th>
+                <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  Orders
+                </th>
+                <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  Edit
+                </th>
+                <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  Delete
+                </th>
               </tr>
             </thead>
             <tbody>
-              {props.users.map((e) => {
+              {users.map((e: User) => {
                 return (
                   <tr key={e.id}>
                     <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
@@ -68,6 +94,39 @@ const UserTable = (props: Props) => {
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       <i className="fas fa-arrow-up text-emerald-500 mr-4"></i>
                       {e.coins}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <i className="fas fa-arrow-up text-emerald-500 mr-4"></i>
+                      {e.role}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <i className="fas fa-arrow-up text-emerald-500 mr-4"></i>
+                      {
+                        //@ts-ignore
+                        String(e._count.orderDetails)
+                      }
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <i className="fas fa-arrow-up text-emerald-500 mr-4"></i>
+
+                      <button
+                        type="button"
+                        className="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out"
+                        onClick={() => {
+                          Router.push(`/admin/user/${e.id}`);
+                        }}
+                      >
+                        Edit
+                      </button>
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <i className="fas fa-arrow-up text-emerald-500 mr-4"></i>
+                      <button
+                        type="button"
+                        className="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 );

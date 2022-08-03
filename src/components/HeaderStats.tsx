@@ -1,12 +1,22 @@
-import { PrismaClient } from "@prisma/client";
 import { GetServerSideProps } from "next";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import apiAuth from "../utils/apiAuth";
 
 import CardStats from "./CardStats";
 
-type Props = {};
+interface Props {
+  count?;
+}
 
-const HeaderStats = (props: Props) => {
+const HeaderStats = ({ count }: Props) => {
+  const [totalUser, setTotalUser] = useState<number>(0);
+
+  useEffect(() => {
+    apiAuth.get("/api/users/count").then((res) => {
+      setTotalUser(res.data.data);
+    });
+  }, []);
+
   return (
     <>
       {/* Header */}
@@ -29,8 +39,8 @@ const HeaderStats = (props: Props) => {
               </div>
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="NEW USERS"
-                  statTitle="2,356"
+                  statSubtitle="TOTAL USER"
+                  statTitle={`${totalUser}`}
                   statArrow="down"
                   statPercent="3.48"
                   statPercentColor="text-red-500"
@@ -72,13 +82,3 @@ const HeaderStats = (props: Props) => {
 };
 
 export default HeaderStats;
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const prisma = new PrismaClient();
-  const users = await prisma.user.findMany({ take: 30 });
-  return {
-    props: {
-      users: JSON.parse(JSON.stringify(users)),
-    },
-  };
-};
