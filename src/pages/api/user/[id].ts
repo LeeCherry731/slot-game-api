@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import prisma from "../../../../libs/prisma-client";
+import prisma from "../../../libs/prisma-client";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await prisma.user.findUnique({

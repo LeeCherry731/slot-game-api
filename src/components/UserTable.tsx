@@ -16,7 +16,7 @@ const UserTable = (props: Props) => {
   const [users, setUsers] = useState<Partial<User & AddCount>[]>(initUsers);
 
   useEffect(() => {
-    apiAuth.get("/api/users").then((res) => {
+    apiAuth.get("/api/user").then((res) => {
       setUsers(res.data.data);
     });
   }, []);

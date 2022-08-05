@@ -1,4 +1,4 @@
-import axios from "axios";
+import { getCookie } from "cookies-next";
 import Router from "next/router";
 import React, { useState } from "react";
 import { Formik, Form, Field, FormikProps, FormikHelpers } from "formik";
@@ -45,9 +45,8 @@ export default function Login(props: FormikProps<FormValues>) {
                 password: values.password,
               })
               .then((v) => {
-                if (v.status === 200) {
-                  Router.push("/admin/dashboard");
-                }
+                console.log("login success");
+                Router.push("admin/dashboard");
               })
               .catch((e) => {
                 setError((v) => !v);

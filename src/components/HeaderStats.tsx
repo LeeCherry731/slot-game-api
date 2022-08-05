@@ -12,7 +12,7 @@ const HeaderStats = ({ count }: Props) => {
   const [totalUser, setTotalUser] = useState<number>(0);
 
   useEffect(() => {
-    apiAuth.get("/api/users/count").then((res) => {
+    apiAuth.get("/api/user/count").then((res) => {
       setTotalUser(res.data.data);
     });
   }, []);

@@ -9,20 +9,28 @@ export async function middleware(req: NextRequest) {
     // return NextResponse.redirect(new URL("/about-2", request.url));
     const jwt = req.cookies.OursiteJWT;
     //@ts-ignore
-    if (!jwt) return NextResponse.next();
+    if (!jwt)
+      return NextResponse.rewrite(
+        //@ts-ignore
+        new URL("/login", req.nextUrl)
+      );
 
     const secret = process.env.TOKEN_SECRET;
     //  return NextResponse.rewrite(new URL("/about-2", request.url));
     try {
       const isJwt = verify(jwt, secret);
       //@ts-ignore
-      if (!isJwt) return NextResponse.next();
+      if (!isJwt)
+        return NextResponse.rewrite(
+          //@ts-ignore
+          new URL("/login", req.nextUrl)
+        );
       //@ts-ignore
       if (isJwt) {
         //@ts-ignore
         return NextResponse.rewrite(
           //@ts-ignore
-          new URL("/admin/dashboard", req.url)
+          new URL("/admin/dashboard", req.nextUrl)
         );
       }
     } catch (e) {

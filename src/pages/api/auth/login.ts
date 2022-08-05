@@ -4,10 +4,11 @@ import { serialize } from "cookie";
 
 import { Role } from "../../../../prisma/seed";
 import prisma from "../../../libs/prisma-client";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const secret = process.env.TOKEN_SECRET;
 
-export default async function (req, res) {
+export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { username, password } = req.body;
 
   // Check in the database
@@ -23,6 +24,7 @@ export default async function (req, res) {
     password === (await user).password &&
     (await user).role === Role.ADMIN
   ) {
+    console.log("sign JWT");
     const token = sign(
       {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 10, // 10 days
@@ -40,7 +42,6 @@ export default async function (req, res) {
     });
 
     res.setHeader("Set-Cookie", serialised);
-
     res.status(200).json({ message: "Success!" });
   } else {
     res.status(401).json({ message: "Invalid credentials!" });
