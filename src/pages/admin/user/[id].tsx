@@ -71,6 +71,20 @@ const userId = (props: Props) => {
                 values: Values,
                 actions: FormikHelpers<Values>
               ) => {
+                apiAuth
+                  .post(`api/user/${userId}`, {
+                    email: values.email,
+                    name: values.name,
+                    coins: values.coins,
+                  })
+                  .then(function (response) {
+                    alert("Edit Success");
+                    console.log(response);
+                  })
+                  .catch(function (error) {
+                    alert("Edit Failed");
+                    console.log(error);
+                  });
                 actions.setSubmitting(false);
               }}
             >

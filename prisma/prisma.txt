@@ -9,3 +9,5 @@ pnpm exec prisma migrate dev --name init
 
 //generate client
 pnpm exec prisma generate
+
+pnpm exec prisma db push
