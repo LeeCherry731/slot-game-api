@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import React from "react";
 import AdminNavbar from "../components/AdminNavbar";
 import FooterAdmin from "../components/FooterAdmin";
@@ -17,7 +16,7 @@ const AdminLayout = (props: Props) => {
         <AdminNavbar />
         {/* Header */}
         <HeaderStats />
-        <div className="px-4 md:px-10 mx-auto w-full -m-24">
+        <div className="px-4 md:px-10 mx-auto w-full -m-24 bg-slate-300">
           {props.children}
           <FooterAdmin />
         </div>

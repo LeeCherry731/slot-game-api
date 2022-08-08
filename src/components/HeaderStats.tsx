@@ -20,7 +20,7 @@ const HeaderStats = ({ count }: Props) => {
   return (
     <>
       {/* Header */}
-      <div className="relative bg-indigo-900 md:pt-32 pb-32 pt-12 ml-64 z-0">
+      <div className="relative bg-slate-300 md:pt-32 pb-32 pt-12 ml-64 z-0">
         <div className="px-4 md:px-10 mx-auto w-full">
           <div>
             {/* Card stats */}

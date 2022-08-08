@@ -26,7 +26,7 @@ model User {
 model OrderDetails {
   id          Int @default(autoincrement()) @id  @unique
   createdAt   DateTime   @default(now())
-  user        User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user        User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int?
   products     Products[]
   description     String?
@@ -39,8 +39,8 @@ model Products {
   price          Int
   image           String?
   description     String?
-  orderDetailId   Int
-  orderDetails    OrderDetails @relation(fields: [orderDetailId], references: [id], onDelete: Cascade)
+  orderDetailId   Int?
+  orderDetails    OrderDetails? @relation(fields: [orderDetailId], references: [id], onDelete: Cascade)
 }
 
 enum Role {

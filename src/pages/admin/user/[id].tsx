@@ -4,7 +4,9 @@ import AdminLayout from "../../../layouts/AdminLayout";
 import apiAuth from "../../../utils/apiAuth";
 import * as Yup from "yup";
 import { Formik, Field, Form, FormikHelpers } from "formik";
-import { User } from "@prisma/client";
+import { Products, User } from "@prisma/client";
+import CoinProducts from "../../../components/CoinProducts";
+import Loading from "../../../components/Loading";
 
 type Props = {};
 
@@ -19,20 +21,41 @@ interface Values {
 }
 
 const userId = (props: Props) => {
-  const rounter = useRouter();
+  const [coins, setCoins] = useState<number>();
+  const [coinProducts, setCoinProducts] = useState<Products[]>();
+
+  const router = useRouter();
   const [userId, setUserId] = useState<string | string[]>("");
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    const { id } = rounter.query;
+    apiAuth
+      .get("/api/product")
+      .then((res) => {
+        console.log(res.data.data);
+        setCoinProducts(res.data.data);
+      })
+      .catch((e) => {
+        console.log("can't fetch Coins data");
+      });
+  }, []);
+
+  useEffect(() => {
+    const { id } = router.query;
     console.log(id);
     setUserId(id);
     console.log(`userId: ${userId}`);
     if (userId) {
-      apiAuth.get(`/api/user/${userId}`).then((res) => {
-        // apiAuth.get(`/api/user/1`).then((res) => {
-        setUser(res.data.data);
-      });
+      apiAuth
+        .get(`/api/user/${userId}`)
+        .then((res) => {
+          // apiAuth.get(`/api/user/1`).then((res) => {
+          setUser(res.data.data);
+          setCoins(res.data.data.coins);
+        })
+        .catch((e) => {
+          console.log("can't fetch User data");
+        });
     }
   }, [userId]);
 
@@ -48,12 +71,26 @@ const userId = (props: Props) => {
     createdAt: Yup.string().required("createdAt is required"),
   });
 
-  console.log(user);
+  let coinProductsList = coinProducts ? (
+    <div className="flex flex-wrap gap-2 justify-center">
+      {coinProducts.map((e) => (
+        <CoinProducts
+          key={e.id}
+          coins={coins}
+          coinProducts={e}
+          setCoins={setCoins}
+          resetCoins={user ? user.coins : 0}
+        />
+      ))}
+    </div>
+  ) : (
+    <Loading />
+  );
 
   return (
     <AdminLayout>
-      <div className="grid h-screen place-items-center w-full pl-56 mt-6">
-        <div className="block p-6  rounded-lg shadow-lg bg-white w-3/5">
+      <div className="grid h-auto place-items-center w-full sm:pl-36 pt-6 sm:w-auto">
+        <div className="block p-6 rounded-lg shadow-lg bg-white w-auto">
           <h1>Edit</h1>
           {user ? (
             <Formik
@@ -78,6 +115,7 @@ const userId = (props: Props) => {
                     coins: values.coins,
                   })
                   .then(function (response) {
+                    setCoins(Number(values.coins));
                     alert("Edit Success");
                     console.log(response);
                   })
@@ -90,7 +128,7 @@ const userId = (props: Props) => {
             >
               {(formik) => (
                 <div>
-                  <h1 className="text-lg uppercase">Login</h1>
+                  <h1 className="text-lg uppercase">Edit</h1>
                   <Form>
                     <label htmlFor="id">ID</label>
                     <Field
@@ -185,7 +223,7 @@ const userId = (props: Props) => {
                       type="role"
                       value={formik.values.role}
                     />
-
+                    {coinProductsList}
                     <label htmlFor="coins">coins</label>
                     <Field
                       className="form-control
@@ -207,7 +245,7 @@ const userId = (props: Props) => {
                       name="coins"
                       placeholder="coins"
                       type="coins"
-                      value={formik.values.coins}
+                      value={coins ?? ""}
                     />
 
                     <label htmlFor="createdAt">createdAt</label>
@@ -315,62 +353,6 @@ const userId = (props: Props) => {
                         </td>
                         <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                           @mdo
-                        </td>
-                      </tr>
-                      <tr className="bg-white border-b">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          2
-                        </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          Jacob
-                        </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          Thornton
-                        </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          @fat
-                        </td>
-                      </tr>
-                      <tr className="bg-white border-b">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          2
-                        </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          Jacob
-                        </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          Thornton
-                        </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          @fat
-                        </td>
-                      </tr>
-                      <tr className="bg-white border-b">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          2
-                        </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          Jacob
-                        </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          Thornton
-                        </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          @fat
-                        </td>
-                      </tr>
-                      <tr className="bg-white border-b">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          2
-                        </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          Jacob
-                        </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          Thornton
-                        </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          @fat
                         </td>
                       </tr>
                       <tr className="bg-white border-b">
