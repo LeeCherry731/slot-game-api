@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
 import AdminLayout from "../../../layouts/AdminLayout";
 import apiAuth from "../../../utils/apiAuth";
@@ -7,6 +8,7 @@ import { Formik, Field, Form, FormikHelpers } from "formik";
 import { Products, User } from "@prisma/client";
 import CoinProducts from "../../../components/CoinProducts";
 import Loading from "../../../components/Loading";
+import Cart from "../../../components/syncfusionComponents/Cart";
 
 type Props = {};
 
@@ -20,7 +22,7 @@ interface Values {
   orders: string[];
 }
 
-const userId = (props: Props) => {
+const userId = ({ id }: any) => {
   const [coins, setCoins] = useState<number>();
   const [coinProducts, setCoinProducts] = useState<Products[]>();
 
@@ -32,8 +34,8 @@ const userId = (props: Props) => {
     apiAuth
       .get("/api/product")
       .then((res) => {
-        console.log(res.data.data);
         setCoinProducts(res.data.data);
+        console.log(coinProducts);
       })
       .catch((e) => {
         console.log("can't fetch Coins data");
@@ -41,10 +43,8 @@ const userId = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    const { id } = router.query;
-    console.log(id);
     setUserId(id);
-    console.log(`userId: ${userId}`);
+
     if (userId) {
       apiAuth
         .get(`/api/user/${userId}`)
@@ -87,11 +87,13 @@ const userId = (props: Props) => {
     <Loading />
   );
 
+  const cart = <Cart />;
+
   return (
     <AdminLayout>
-      <div className="grid h-auto place-items-center w-full sm:pl-36 pt-6 sm:w-auto">
-        <div className="block p-6 rounded-lg shadow-lg bg-white w-auto">
-          <h1>Edit</h1>
+      {cart ?? null}
+      <div className="grid h-auto place-items-center w-full pt-6 ">
+        <div className="block p-6 rounded-lg shadow-lg bg-white w-full">
           {user ? (
             <Formik
               initialValues={{
@@ -108,15 +110,18 @@ const userId = (props: Props) => {
                 values: Values,
                 actions: FormikHelpers<Values>
               ) => {
+                console.log("summit");
                 apiAuth
                   .post(`api/user/${userId}`, {
                     email: values.email,
                     name: values.name,
-                    coins: values.coins,
+                    coins: coins,
                   })
                   .then(function (response) {
                     setCoins(Number(values.coins));
+
                     alert("Edit Success");
+                    router.reload();
                     console.log(response);
                   })
                   .catch(function (error) {
@@ -382,3 +387,9 @@ const userId = (props: Props) => {
 };
 
 export default userId;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const id = context.query.id;
+  console.log(context.query.id);
+  return { props: { id } };
+};

@@ -7,10 +7,10 @@ import { useRouter } from "next/router";
 
 export default function Sidebar() {
   const [collapseShow, setCollapseShow] = useState("hidden");
-  const router = useRouter();
+
   return (
     <>
-      <nav className="">
+      <nav className="w-64 bg-slate-700 h-auto">
         <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
           {/* Toggler */}
           <button

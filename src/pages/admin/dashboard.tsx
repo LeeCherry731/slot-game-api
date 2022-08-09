@@ -44,14 +44,12 @@ const dashboard = (props: Props) => {
 
   const noti = showNoti ? (
     <Notification setExit={setShowNoti} user={user} />
-  ) : (
-    <div className="z-50 text-black">Nothing</div>
-  );
+  ) : null;
 
   return (
     <AdminLayout>
       {noti}
-      <div className="ml-64 top-0">
+      <div className="top-0">
         <div className="flex flex-wrap">
           <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
             {<CardLineChart /> ?? "Loading"}

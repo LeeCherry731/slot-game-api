@@ -6,7 +6,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     console.log(req.url);
     const coins = await prisma.products.findMany();
-
-    res.status(200).json({ data: coins });
+    console.log(coins);
+    return res.status(200).json({ data: coins });
   }
 };

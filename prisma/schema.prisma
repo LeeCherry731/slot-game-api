@@ -12,7 +12,7 @@ datasource db {
 
 
 model User {
-  id          Int      @default(autoincrement()) @id  @unique
+    id   String @id @default(uuid())
   email       String?  @unique
   password    String
   name        String @unique
@@ -27,7 +27,7 @@ model OrderDetails {
   id          Int @default(autoincrement()) @id  @unique
   createdAt   DateTime   @default(now())
   user        User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int?
+  userId      String?
   products     Products[]
   description     String?
 }

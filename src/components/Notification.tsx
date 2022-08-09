@@ -1,3 +1,4 @@
+import Router from "next/router";
 import { userInfo } from "os";
 import React from "react";
 import { User } from "../types/project_type";
@@ -49,6 +50,7 @@ const Notification = ({ setExit, user }: Props) => {
         <button
           type="button"
           className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-green-800 dark:hover:bg-green-900"
+          onClick={() => Router.push("customers")}
         >
           <svg
             aria-hidden="true"

@@ -7,7 +7,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   console.log(req.url);
   if (req.method === "GET") {
     const user = await prisma.user.findUnique({
-      where: { id: Number(req.query.id) },
+      where: { id: String(req.query.id) },
     });
 
     res.status(200).json({ data: user });
@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const { email, name, coins } = req.body;
     const user = await prisma.user.updateMany({
-      where: { id: Number(req.query.id) },
+      where: { id: String(req.query.id) },
       data: {
         email,
         name,
@@ -29,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === "DELETE") {
     const user = await prisma.user.delete({
-      where: { id: Number(req.query.id) },
+      where: { id: String(req.query.id) },
     });
 
     res.status(200).json({ data: user });
