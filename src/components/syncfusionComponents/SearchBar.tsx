@@ -1,7 +1,7 @@
 import { User } from "@prisma/client";
 import Router from "next/router";
 import React, { useState } from "react";
-import apiAuth from "../../utils/apiAuth";
+import apiAxios from "../../utils/apiAxios";
 
 type Props = {};
 const initUsers: User[] = [];
@@ -16,7 +16,7 @@ const SearchBar = (props: Props) => {
     }
     if (e.currentTarget.value.trim() != "") {
       setEmpty((e) => false);
-      apiAuth
+      apiAxios
         .get("api/user?param=" + e.currentTarget.value.toString())
         .then((res) => {
           console.log(res.data.data);
@@ -114,9 +114,11 @@ const SearchBar = (props: Props) => {
                             const username = prompt("Please enter username");
                             console.log(username);
                             if (username === e.name) {
-                              apiAuth.delete(`api/user/${e.id}`).then((res) => {
-                                Router.reload();
-                              });
+                              apiAxios
+                                .delete(`api/user/${e.id}`)
+                                .then((res) => {
+                                  Router.reload();
+                                });
                             }
                           }}
                         >

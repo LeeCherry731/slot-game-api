@@ -24,7 +24,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     password === (await user).password &&
     (await user).role === Role.ADMIN
   ) {
-    console.log("sign JWT");
     const token = sign(
       {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 10, // 10 days

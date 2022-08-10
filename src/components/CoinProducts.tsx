@@ -10,7 +10,7 @@ type Props = {
 
 const CoinProducts = (props: Props) => {
   return (
-    <div className="flex justify-center my-5">
+    <div className="flex justify-center my-5 z-20">
       <div className="block rounded-lg shadow-lg bg-white max-w-xs text-center">
         <div className="py-3 px-6 border-b border-gray-300">
           Coins: {props.coinProducts.amount}

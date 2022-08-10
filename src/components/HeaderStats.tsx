@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
-import apiAuth from "../utils/apiAuth";
+import apiAuth from "../utils/apiAxios";
 
 import CardStats from "./CardStats";
 

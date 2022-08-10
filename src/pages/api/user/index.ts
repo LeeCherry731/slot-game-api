@@ -23,6 +23,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).json({ data: users });
   }
 
+  if (req.method === "PUT") {
+    const { id, email, name, coins } = req.body;
+    console.log(id);
+    const user = await prisma.user.updateMany({
+      where: { id: String(id) },
+      data: {
+        email,
+        name,
+        coins: Number(coins),
+      },
+    });
+
+    res.status(200).json({ data: user });
+  }
+
   if (req.method === "GET") {
     const users = await prisma.user.findMany({
       take: 30,

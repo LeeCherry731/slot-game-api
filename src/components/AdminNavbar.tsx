@@ -1,6 +1,6 @@
 import Router from "next/router";
 import React from "react";
-import apiAuth from "../utils/apiAuth";
+import apiAuth from "../utils/apiAxios";
 
 type Props = {};
 

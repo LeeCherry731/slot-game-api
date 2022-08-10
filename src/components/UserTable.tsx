@@ -2,7 +2,7 @@ import { User } from "@prisma/client";
 import Router from "next/router";
 
 import React, { useEffect, useState } from "react";
-import apiAuth from "../utils/apiAuth";
+import apiAxios from "../utils/apiAxios";
 
 type Props = {};
 
@@ -16,7 +16,7 @@ const UserTable = (props: Props) => {
   const [users, setUsers] = useState<Partial<User & AddCount>[]>(initUsers);
 
   useEffect(() => {
-    apiAuth.get("/api/user").then((res) => {
+    apiAxios.get("/api/user").then((res) => {
       setUsers(res.data.data);
     });
   }, []);
@@ -127,7 +127,7 @@ const UserTable = (props: Props) => {
                           const username = prompt("Please enter username");
                           console.log(username);
                           if (username === e.name) {
-                            apiAuth.delete(`api/user/${e.id}`).then((res) => {
+                            apiAxios.delete(`api/user/${e.id}`).then((res) => {
                               Router.reload();
                             });
                           }

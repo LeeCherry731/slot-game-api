@@ -3,7 +3,7 @@ import Router from "next/router";
 import React, { useState } from "react";
 import { Formik, Form, Field, FormikProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import apiAuth from "../utils/apiAuth";
+import apiAxios from "../utils/apiAxios";
 
 interface FormValues {
   username: string;
@@ -39,13 +39,12 @@ export default function Login(props: FormikProps<FormValues>) {
             values: FormValues,
             actions: FormikHelpers<FormValues>
           ) => {
-            apiAuth
+            apiAxios
               .post("api/auth/login", {
                 username: values.username,
                 password: values.password,
               })
               .then((v) => {
-                console.log("login success");
                 Router.push("admin/dashboard");
               })
               .catch((e) => {
